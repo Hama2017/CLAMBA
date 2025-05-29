@@ -1,0 +1,33 @@
+{
+  "ollama": {
+    "llm_provider": "ollama",
+    "llm_endpoint": "http://localhost:11434/api/generate",
+    "model_name": "mistral",
+    "temperature": 0.3,
+    "max_tokens": 1000
+  },
+  "openai": {
+    "llm_provider": "openai",
+    "llm_endpoint": "https://api.openai.com/v1/chat/completions",
+    "model_name": "gpt-4",
+    "api_key": "sk-XXXX",
+    "temperature": 0.3,
+    "max_tokens": 1000
+  },
+  "claude": {
+    "llm_provider": "claude",
+    "llm_endpoint": "https://api.anthropic.com/v1/messages",
+    "model_name": "claude-3-sonnet-20240229",
+    "api_key": "sk-ant-XXXX",
+    "temperature": 0.3,
+    "max_tokens": 1000
+  },
+  "huggingface": {
+    "llm_provider": "huggingface",
+    "llm_endpoint": "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+    "model_name": "mistralai/Mistral-7B-Instruct-v0.2",
+    "api_key": "hf_XXXX",
+    "temperature": 0.3,
+    "max_tokens": 1000
+  }
+}
