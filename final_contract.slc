@@ -1,0 +1,174 @@
+{
+  "name": "Contrat de prestations de services portuaires",
+  "automata": [
+    {
+      "clause_id": "C1",
+      "name": "Parties du contrat",
+      "description": "La société PORTSERVICES SARL et la société LOGISTIX SA",
+      "states": [
+        "initial",
+        "active",
+        "terminated"
+      ],
+      "transitions": [
+        {
+          "from": "initial",
+          "to": "active"
+        }
+      ],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C2",
+      "name": "Siège social de la Prestataire",
+      "description": "12, Quai Maritime, Port Autonome",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C3",
+      "name": "RCS et représentant de la Prestataire",
+      "description": "immatriculée au RCS sous le numéro 123 456 789, représentée par Monsieur Jean DUPORT",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C4",
+      "name": "Siège social du Client",
+      "description": "45, Avenue de la Logistique, Zone Industrielle",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C5",
+      "name": "RCS et représentant du Client",
+      "description": "immatriculée au RCS sous le numéro 987 654 321, représentée par Madame Claire TRANSPORT",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C6",
+      "name": "Objet du contrat",
+      "description": "la réalisation de prestations de services portuaires incluant notamment le chargement, le déchargement, la manutention et le stockage temporaire des marchandises du Client dans la zone portuaire désignée.",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C7",
+      "name": "Obligations de la Prestataire",
+      "description": "réaliser les prestations conformément aux normes en vigueur et aux règles de sécurité applicables dans le port.",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C8",
+      "name": "Obligations du Client",
+      "description": "fournir toutes les informations nécessaires à la bonne exécution des prestations et à payer les sommes dues dans les délais convenus.",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C9",
+      "name": "Durée du contrat",
+      "description": "12 mois à compter de sa signature.",
+      "states": [
+        "initial",
+        "active",
+        "terminated"
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "terminated",
+          "condition": {
+            "type": "time_limit",
+            "limit": "12 mois"
+          }
+        }
+      ],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C10",
+      "name": "Résiliation du contrat",
+      "description": "Le présent contrat peut être résilié par l'une ou l'autre des parties, moyennant un préavis de 30 jours notifié par lettre recommandée avec accusé de réception.",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [
+        {
+          "from": "active",
+          "to": "terminated",
+          "condition": {
+            "type": "clause_dependency",
+            "dependencies": [
+              "C9"
+            ]
+          }
+        },
+        {
+          "from": "active",
+          "to": "terminated",
+          "condition": {
+            "type": "event",
+            "event": "30 jours notifiés par lettre recommandée avec accusé de réception"
+          }
+        }
+      ],
+      "functions": [],
+      "variables": []
+    },
+    {
+      "clause_id": "C11",
+      "name": "Date et signatures",
+      "description": "Fait à Port Autonome, le 29/05/2025 Le Prestataire Le Client Signature Signature",
+      "states": [
+        "initial",
+        "active"
+      ],
+      "transitions": [],
+      "functions": [],
+      "variables": []
+    }
+  ],
+  "functions": [],
+  "variables": []
+}

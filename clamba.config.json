@@ -1,8 +1,7 @@
 {
-  "llm_provider": "fireworks",
-  "llm_endpoint": "https://api.fireworks.ai/inference/v1/chat/completions",
-  "model_name": "accounts/fireworks/models/mixtral-8x22b-instruct",
-  "api_key": "fw_3ZRhCxX6yLfyyxPeuiKx8oJx",
+  "llm_provider": "ollama",
+  "llm_endpoint": "http://localhost:11434/api/generate",
+  "model_name": "mistral:latest",
   "temperature": 0.3,
-  "max_tokens": 1000
+  "max_tokens": 2000
 }
