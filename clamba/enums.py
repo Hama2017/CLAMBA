@@ -5,3 +5,4 @@ class LLMProvider(str, Enum):
     OPENAI = "openai"
     CLAUDE = "claude"
     HUGGINGFACE = "huggingface"
+    FIREWORKS = "fireworks" 
