@@ -94,9 +94,9 @@ class Automate(BaseModel):
     @classmethod
     def from_process(
         cls, 
-        process: "Process", 
+        process, # Type: "Process" 
         dependencies: List[str], 
-        sanitizer: "IDSanitizer"
+        sanitizer # Type: "IDSanitizer"
     ) -> "Automate":
         """
         Create automaton from process
@@ -109,6 +109,7 @@ class Automate(BaseModel):
         Returns:
             Automate instance
         """
+        # Import here to avoid circular imports
         from ..utils.sanitizer import create_states_from_steps, create_transitions_from_steps
         
         # Create states and transitions
