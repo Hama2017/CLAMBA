@@ -127,4 +127,169 @@ class OpenAIProvider(BaseAIProvider):
                 time.sleep(retry_delay)
                 retry_delay *= backoff_factor
                 
-            except openai.Authentication
+            except openai.AuthenticationError as e:
+                raise AIProviderError(f"OpenAI authentication failed: {str(e)}") from e
+                
+            except openai.BadRequestError as e:
+                raise AIProviderError(f"OpenAI bad request: {str(e)}") from e
+                
+            except openai.APITimeoutError as e:
+                if attempt == max_retries - 1:
+                    raise AIProviderError(f"OpenAI request timeout: {str(e)}") from e
+                
+                self.logger.warning(f"Request timeout, retrying in {retry_delay}s...")
+                time.sleep(retry_delay)
+                retry_delay *= backoff_factor
+                
+            except Exception as e:
+                if attempt == max_retries - 1:
+                    self.handle_error(e, "OpenAI query failed")
+                
+                self.logger.warning(f"Query failed: {str(e)}, retrying in {retry_delay}s...")
+                time.sleep(retry_delay)
+                retry_delay *= backoff_factor
+        
+        raise AIProviderError(f"All {max_retries} attempts failed")
+
+    def test_connection(self) -> bool:
+        """
+        Test connection to OpenAI
+        
+        Returns:
+            True if connection successful
+        """
+        try:
+            # Simple test with minimal tokens
+            response = self.client.chat.completions.create(
+                model=self.config.model,
+                messages=[{"role": "user", "content": "Hello"}],
+                max_tokens=5,
+                temperature=0
+            )
+            
+            if response.choices and len(response.choices) > 0:
+                self.logger.info("✅ OpenAI connection successful")
+                return True
+            else:
+                self.logger.error("❌ OpenAI connection failed: No response")
+                return False
+                
+        except openai.AuthenticationError:
+            self.logger.error("❌ OpenAI authentication failed: Invalid API key")
+            return False
+        except openai.APIConnectionError:
+            self.logger.error("❌ OpenAI connection failed: Network error")
+            return False
+        except openai.RateLimitError:
+            self.logger.warning("⚠️ OpenAI rate limit hit during connection test")
+            return True  # Connection works, just rate limited
+        except Exception as e:
+            self.logger.error(f"❌ OpenAI connection test failed: {str(e)}")
+            return False
+
+    def get_model_info(self) -> Dict[str, Any]:
+        """
+        Get information about the current model
+        
+        Returns:
+            Model information dictionary
+        """
+        try:
+            # Try to get model details (this may not be available for all models)
+            models = self.client.models.list()
+            
+            for model in models.data:
+                if model.id == self.config.model:
+                    return {
+                        "name": model.id,
+                        "created": model.created,
+                        "owned_by": model.owned_by,
+                        "object": model.object,
+                    }
+            
+            # If model not found in list, return basic info
+            return {
+                "name": self.config.model,
+                "status": "configured",
+                "max_tokens": self.config.max_tokens,
+                "temperature": self.config.temperature,
+            }
+            
+        except Exception as e:
+            return {
+                "name": self.config.model,
+                "status": "error",
+                "error": str(e)
+            }
+
+    def get_available_models(self) -> list[str]:
+        """
+        Get list of available models
+        
+        Returns:
+            List of model names
+        """
+        try:
+            models = self.client.models.list()
+            return [model.id for model in models.data]
+        except Exception:
+            return []
+
+    def prepare_prompt(self, base_prompt: str, **context) -> str:
+        """
+        Prepare prompt for OpenAI
+        
+        Args:
+            base_prompt: Base prompt
+            **context: Additional context
+            
+        Returns:
+            Formatted prompt
+        """
+        # OpenAI handles system messages separately, so just return the prompt
+        return base_prompt
+
+    def supports_streaming(self) -> bool:
+        """OpenAI supports streaming"""
+        return True
+
+    def get_retry_settings(self) -> Dict[str, Any]:
+        """Get OpenAI-specific retry settings"""
+        return {
+            "max_retries": 5,  # Higher retries for rate limits
+            "retry_delay": 1.0,
+            "backoff_factor": 2.0,
+        }
+
+    def estimate_tokens(self, text: str) -> int:
+        """
+        Better token estimation for OpenAI models
+        
+        Args:
+            text: Text to estimate
+            
+        Returns:
+            Estimated token count
+        """
+        # More accurate estimation for OpenAI models
+        # Rough approximation: 1 token ≈ 4 characters for English text
+        return max(1, len(text) // 4)
+
+    def get_token_limit(self) -> Optional[int]:
+        """
+        Get context window size for the model
+        
+        Returns:
+            Token limit for the model
+        """
+        # Common OpenAI model limits
+        model_limits = {
+            "gpt-4": 8192,
+            "gpt-4-32k": 32768,
+            "gpt-4-turbo": 128000,
+            "gpt-4-turbo-preview": 128000,
+            "gpt-3.5-turbo": 4096,
+            "gpt-3.5-turbo-16k": 16384,
+        }
+        
+        return model_limits.get(self.config.model, self.config.max_tokens)

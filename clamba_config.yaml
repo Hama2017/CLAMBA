@@ -1,0 +1,49 @@
+# Configuration CLAMBA - Smart Legal Contract Automaton Generator
+# ================================================================
+
+ai:
+  # Fournisseur IA : "ollama", "openai", "anthropic"
+  provider: "ollama"
+  
+  # Configuration Ollama (local)
+  ollama:
+    url: "http://localhost:11434"
+    model: "nous-hermes2"
+    max_tokens: 4000
+    temperature: 0.05
+    timeout: 120
+    
+  # Configuration OpenAI (décommenter si utilisé)
+  # openai:
+  #   api_key: "${OPENAI_API_KEY}"
+  #   model: "gpt-4"
+  #   max_tokens: 4000
+  #   temperature: 0.05
+  #   timeout: 120
+  #   organization: null  # Optionnel
+    
+  # Configuration Anthropic Claude (décommenter si utilisé)
+  # anthropic:
+  #   api_key: "${ANTHROPIC_API_KEY}"
+  #   model: "claude-3-sonnet-20240229"
+  #   max_tokens: 4000
+  #   temperature: 0.05
+  #   timeout: 120
+
+# Configuration de l'analyse
+analysis:
+  max_retries: 3
+  min_processes: 3
+  max_processes: 6
+  max_steps_per_process: 7
+  cycle_detection: true
+
+# Configuration de sortie
+output:
+  include_metadata: true
+  sanitize_ids: true
+  output_format: "json"  # "json" ou "yaml"
+  pretty_print: true
+
+# Mode debug
+debug: false
