@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "clamba"
+version = "0.1.0"
+description = "CLAMBA - Smart Legal Contract Automaton Generator using AI"
+authors = ["Your Name <your.email@example.com>"]
+readme = "README.md"
+homepage = "https://github.com/yourusername/clamba"
+repository = "https://github.com/yourusername/clamba"
+documentation = "https://github.com/yourusername/clamba"
+keywords = ["legal", "contract", "automation", "ai", "smart-contract"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Legal Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+packages = [{include = "clamba"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.31.0"
+PyPDF2 = "^3.0.1"
+pydantic = "^2.0.0"
+pydantic-settings = "^2.0.0"
+openai = {version = "^1.0.0", optional = true}
+anthropic = {version = "^0.25.0", optional = true}
+python-dotenv = "^1.0.0"
+typer = {version = "^0.9.0", optional = true}
+rich = {version = "^13.0.0", optional = true}
+
+[tool.poetry.extras]
+openai = ["openai"]
+anthropic = ["anthropic"]
+cli = ["typer", "rich"]
+all = ["openai", "anthropic", "typer", "rich"]
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+pytest-cov = "^4.1.0"
+black = "^23.0.0"
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+mypy = "^1.5.0"
+pre-commit = "^3.4.0"
+
+[tool.poetry.scripts]
+clamba = "clamba.cli:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 88
+target-version = ['py38']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
