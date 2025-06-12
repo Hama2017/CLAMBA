@@ -182,7 +182,7 @@ class CLAMBAAnalyzer:
         """Generate automatons from processes"""
         self.logger.info("⚙️ Generating automatons...")
         
-        from ..models.automate import Automate
+        from ..models.contract import Automate
         from ..utils.sanitizer import IDSanitizer
         
         sanitizer = IDSanitizer()
@@ -249,7 +249,8 @@ class CLAMBAAnalyzer:
             include_metadata = self.config.output.include_metadata
         
         # Prepare data for export
-        export_data = result.contract.dict()
+        export_data = result.contract.model_dump(mode='json')
+
         
         if include_metadata:
             export_data["metadata"] = result.metadata

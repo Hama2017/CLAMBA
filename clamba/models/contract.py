@@ -5,7 +5,11 @@ Contract models for CLAMBA
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from typing import TYPE_CHECKING
 
+
+from .process import ProcessAnalysisResult
+    
 from pydantic import BaseModel, Field
 
 
@@ -244,16 +248,6 @@ class Contract(BaseModel):
         
         dependency_graph = self.get_dependency_graph()
         return topological_sort(dependency_graph)
-
-
-class ProcessAnalysisResult(BaseModel):
-    """Result of process analysis"""
-    
-    processes: List["Process"] = Field(..., description="Detected processes")
-    detection_method: str = Field(..., description="Detection method used")
-    confidence_score: float = Field(..., description="Confidence score (0-1)")
-    analysis_time_seconds: float = Field(..., description="Analysis time in seconds")
-    metadata: Dict[str, Any] = Field(default_factory=dict, description="Additional metadata")
 
 
 class ContractResult(BaseModel):

@@ -290,11 +290,13 @@ ANALYSER LES DÉPENDANCES LOGIQUES:"""
             return {}
     
     def _extract_json_array(self, text: str) -> Optional[str]:
-        """Extract JSON array from text"""
+        """Extract JSON array from text - VERSION CORRIGÉE"""
+        # Méthode 1: Chercher [...]
         start_idx = text.find('[')
         if start_idx == -1:
             return None
         
+        # Compter les crochets pour trouver la fin
         bracket_count = 0
         for i, char in enumerate(text[start_idx:], start_idx):
             if char == '[':
@@ -302,10 +304,45 @@ ANALYSER LES DÉPENDANCES LOGIQUES:"""
             elif char == ']':
                 bracket_count -= 1
                 if bracket_count == 0:
-                    return text[start_idx:i+1]
+                    json_candidate = text[start_idx:i+1]
+                    
+                    # Vérifier que c'est du JSON valide
+                    try:
+                        import json
+                        json.loads(json_candidate)
+                        return json_candidate
+                    except json.JSONDecodeError:
+                        continue
+        
+        # Méthode 2: Regex fallback
+        import re
+        
+        # Pattern pour JSON array complet
+        pattern = r'\[\s*\{.*?\}\s*(?:,\s*\{.*?\}\s*)*\]'
+        matches = re.findall(pattern, text, re.DOTALL)
+        
+        for match in matches:
+            try:
+                import json
+                json.loads(match)
+                return match
+            except json.JSONDecodeError:
+                continue
+        
+        # Méthode 3: Simple extraction entre [ et ]
+        if '[' in text and ']' in text:
+            start = text.find('[')
+            end = text.rfind(']') + 1
+            candidate = text[start:end]
+            
+            try:
+                import json
+                json.loads(candidate)
+                return candidate
+            except json.JSONDecodeError:
+                pass
         
         return None
-    
     def _extract_json_object(self, text: str) -> Optional[str]:
         """Extract JSON object from text"""
         start_idx = text.find('{')
