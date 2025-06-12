@@ -1,7 +1,0 @@
-{
-  "llm_provider": "ollama",
-  "llm_endpoint": "http://localhost:11434/api/generate",
-  "model_name": "mistral:latest",
-  "temperature": 0.3,
-  "max_tokens": 2000
-}
