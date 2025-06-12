@@ -8,7 +8,7 @@ ai:
   # Configuration Ollama (local)
   ollama:
     url: "http://localhost:11434"
-    model: "nous-hermes2"
+    model: "nous-hermes2:latest"
     max_tokens: 4000
     temperature: 0.05
     timeout: 120

@@ -1319,7 +1319,6 @@ files = [
     {file = "PyYAML-6.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:39693e1f8320ae4f43943590b49779ffb98acb81f788220ea932a6b6c51004d8"},
     {file = "pyyaml-6.0.2.tar.gz", hash = "sha256:d584d9ec91ad65861cc08d42e834324ef890a082e591037abe114850ff7bbc3e"},
 ]
-markers = {main = "extra == \"anthropic\" or extra == \"all\""}
 
 [[package]]
 name = "requests"
@@ -1560,4 +1559,4 @@ openai = ["openai"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.8.1"
-content-hash = "0fde7df22d152af0e639e8b67bdb4111215583ebdc0cc7fdfc5241a7aedfb9e9"
+content-hash = "3aac6ae9675fbf6f84a7361125e0c4f969d6a459cde334584c3eb7da82a4ded3"
